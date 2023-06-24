@@ -8,6 +8,7 @@ public class PlayerMovementScript : MonoBehaviour
     private float verticalInput;
     [SerializeField] private float _rotationSpeed = 700.0f;
     [SerializeField]private float _speed = 8.0f;
+    [SerializeField] private PlayerInputScript PlayerInputScript;
     private bool isWalking;
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,13 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void PlayerMovement()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        // horizontalInput = Input.GetAxis("Horizontal");
 
-        verticalInput = Input.GetAxis("Vertical");
+        // verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(horizontalInput,0,verticalInput);
+        Vector2 playerInput = PlayerInputScript.GetMovement();
+
+        Vector3 direction = new Vector3(playerInput.x,0,playerInput.y);
 
         transform.Translate(direction * _speed * Time.deltaTime, Space.World);
 
