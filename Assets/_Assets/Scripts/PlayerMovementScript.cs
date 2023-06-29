@@ -6,20 +6,30 @@ public class PlayerMovementScript : MonoBehaviour
 {
     private float horizontalInput;
     private float verticalInput;
+
+   
     [SerializeField] private float _rotationSpeed = 700.0f;
-    [SerializeField]private float _speed = 8.0f;
+    [SerializeField] private float _speed = 8.0f;
     [SerializeField] private PlayerInputScript PlayerInputScript;
+    [SerializeField] private LayerMask countersLayerMask;
     private bool isWalking;
+    private Vector3 lastInteractLocation;
     // Start is called before the first frame update
     void Start()
     {
-        
+        PlayerInputScript.OnInteractAction += PlayerInputActions_OnInteractAction;
+    }
+
+    private void PlayerInputActions_OnInteractAction(object sender, System.EventArgs e)
+    {
+        HandleInteractions();
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMovement();
+        
     }
 
     public void PlayerMovement()
@@ -29,50 +39,51 @@ public class PlayerMovementScript : MonoBehaviour
 
         Vector2 playerInput = PlayerInputScript.GetMovement();
 
-        Vector3 direction = new Vector3(playerInput.x,0,playerInput.y);
+        Vector3 direction = new Vector3(playerInput.x, 0, playerInput.y);
         float playerRadius = .7f;
         float playerhieght = 2.2f;
-        float moveDistance = Time.deltaTime  * _speed ;
-        bool canMmove = !Physics.CapsuleCast(transform.position ,transform.position + Vector3.up * playerhieght, playerRadius, direction, moveDistance);
-        
-       
-        if(!canMmove)
-        {   
-            Vector3 directionX = new Vector3(direction.x,0,0);
+        float moveDistance = Time.deltaTime * _speed;
+        bool canMmove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, direction, moveDistance);
+
+
+        if (!canMmove)
+        {
+            Vector3 directionX = new Vector3(direction.x, 0, 0).normalized;
 
             canMmove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionX, moveDistance);
 
-            if(canMmove)
+            if (canMmove)
             {
                 direction = directionX;
-                Debug.Log("direction.x is working");
+                //Debug.Log("direction.x is working");
             }
 
             else
             {
-                
-                Vector3 directionZ = new Vector3(0,0,direction.z);
+
+                Vector3 directionZ = new Vector3(0, 0, direction.z).normalized;
 
                 canMmove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionZ, moveDistance);
 
                 if (canMmove)
                 {
                     direction = directionZ;
-                    Debug.Log("having trouble with the y directional");
+                   // Debug.Log("having trouble with the y directional");
                 }
             }
         }
 
-        if(canMmove)
+        if (canMmove)
         {
             transform.Translate(direction * _speed * Time.deltaTime, Space.World);
         }
 
         isWalking = direction != Vector3.zero;
 
-        if(isWalking){
+        if (isWalking)
+        {
 
-            Quaternion rotation = Quaternion.LookRotation( direction, Vector3.up);
+            Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, _rotationSpeed * Time.deltaTime);
         }
@@ -82,4 +93,29 @@ public class PlayerMovementScript : MonoBehaviour
     {
         return isWalking;
     }
+
+
+    private void HandleInteractions()
+    {
+        float interactDistance = 2.0f;
+
+        Vector2 playerInput = PlayerInputScript.GetMovement();
+
+        Vector3 direction = new Vector3(playerInput.x, 0, playerInput.y);
+
+        if (direction != Vector3.zero)
+        {
+            lastInteractLocation = direction;
+        }
+
+       if (Physics.Raycast(transform.position, lastInteractLocation, out RaycastHit raycastHit, interactDistance, countersLayerMask)){
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                //Has clearCounter
+
+                clearCounter.Interact();
+            }
+       }
+    }
 }
+
