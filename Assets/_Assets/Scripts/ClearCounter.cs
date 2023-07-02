@@ -18,6 +18,6 @@ public class ClearCounter : MonoBehaviour
 
     public void Interact()
     {
-        //Debug.Log("the clear counter");
+        Debug.Log("We interacting with the clear counter!");
     }
 }

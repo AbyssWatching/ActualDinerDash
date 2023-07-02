@@ -1,34 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerMovementScript : MonoBehaviour
 {
+
+    public static PlayerMovementScript Instance { get;private set;}
+
+    public event EventHandler <OnSelectedCounterChangedEventArgs>OnSelectedCounterChanged;
+
+    public class OnSelectedCounterChangedEventArgs : EventArgs {
+        public ClearCounter selectedCounter;
+    }
+
     private float horizontalInput;
     private float verticalInput;
-
+    private bool isWalking;
    
     [SerializeField] private float _rotationSpeed = 700.0f;
     [SerializeField] private float _speed = 8.0f;
     [SerializeField] private PlayerInputScript PlayerInputScript;
     [SerializeField] private LayerMask countersLayerMask;
-    private bool isWalking;
+    
     private Vector3 lastInteractLocation;
+   
+    private ClearCounter selectedCounter;
     // Start is called before the first frame update
+
+
     void Start()
     {
         PlayerInputScript.OnInteractAction += PlayerInputActions_OnInteractAction;
     }
 
+    private void Awake(){
+        if (Instance != null){
+            Debug.Log("Shit HIT THE FAN More than one player instance!");
+        }
+        Instance = this;
+    }
     private void PlayerInputActions_OnInteractAction(object sender, System.EventArgs e)
     {
-        HandleInteractions();
+        if (selectedCounter != null)
+        {
+            selectedCounter.Interact();
+        }
+
+        //HandleInteractions();
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMovement();
+        HandleInteractions();
         
     }
 
@@ -109,13 +135,31 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
        if (Physics.Raycast(transform.position, lastInteractLocation, out RaycastHit raycastHit, interactDistance, countersLayerMask)){
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)){
                 //Has clearCounter
+                if (clearCounter != selectedCounter){
+                    selectedCounter = clearCounter;
 
-                clearCounter.Interact();
-            }
-       }
+                    SetSelectedCounter(clearCounter);
+                }
+            } else {
+                SetSelectedCounter(null);;
+                }
+       } else {
+        SetSelectedCounter(null);
+        }
+    //Debug.Log(selectedCounter);
+
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter){
+
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs{
+            selectedCounter = selectedCounter
+        });
+
     }
 }
 
