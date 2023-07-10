@@ -21,7 +21,7 @@ public class PlayerInputScript : MonoBehaviour
     {
         
         OnInteractAction?.Invoke(this, EventArgs.Empty);
-        Debug.Log(obj);
+       // Debug.Log(obj);
     }
 
     public Vector2 GetMovement()
