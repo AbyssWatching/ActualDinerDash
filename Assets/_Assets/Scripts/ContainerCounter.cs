@@ -1,43 +1,19 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : BaseCounter, IKitchenObjectInterface
+public class ContainerCounter : BaseCounter, IKitchenObjectInterface
 {
-
-    [SerializeField] private KitchenObjectSO kitchenObjectSO;
+    // Start is called before the first frame update
+       [SerializeField] private KitchenObjectSO kitchenObjectSO;
     [SerializeField] private GameObject counterTopSpawnPoint;
 
-    [SerializeField] private ClearCounter secondClearCounter;
-    // Start is called before the first frame update
     [SerializeField] private bool testing;
    private KitchenObject kitchenObject;
 
-
-    private void Update(){
-        if (testing && Input.GetKeyDown(KeyCode.T))
-        {
-            if (kitchenObject != null)
-            {
-                kitchenObject.SetKitchenObjectParent(secondClearCounter);
-                Debug.Log("we moved the item over bois!");
-            }
-        }
-    }
-    public override void Interact(PlayerMovementScript player)
+      public override void Interact(PlayerMovementScript player)
     {
-
-        if(!HasKitchenObject())
-        {
-            if (player.HasKitchenObject())
-            {
-             //do something   
-            }
-            else{
-                //there is an object here
-            }
-        } 
-
         if(kitchenObject == null){
 
             Debug.Log("We interacting with the clear counter!");
@@ -50,7 +26,7 @@ public class ClearCounter : BaseCounter, IKitchenObjectInterface
         }
     }
 
-    public Transform GetKitchenObjectFollowtransform()
+        public Transform GetKitchenObjectFollowtransform()
     {
         return counterTopSpawnPoint.transform;
     }
