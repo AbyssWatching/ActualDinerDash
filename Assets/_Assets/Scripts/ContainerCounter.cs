@@ -18,15 +18,15 @@ public class ContainerCounter : BaseCounter, IKitchenObjectInterface
     public override void Interact(PlayerMovementScript player)
     {
 
-        if (!player.HasKitchenObject())
+        //if (!player.HasKitchenObject())
         // {
         //     //play
         //     Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterTopSpawnPoint.transform);
         //     kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
         //}
-        if(!HasKitchenObject()){
+        if(!player.HasKitchenObject()){
 
-            Debug.Log("We interacting with the clear counter!");
+            //Debug.Log("We interacting with the clear counter!");
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
             kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
         
