@@ -2,22 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCounter : MonoBehaviour
+public class BaseCounter : MonoBehaviour, IKitchenObjectInterface
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private KitchenObject kitchenObject;
+    [SerializeField] private GameObject counterTopSpawnPoint;
 
     public virtual void Interact(PlayerMovementScript player)
     {
         Debug.Log("interact");
     } 
+
+    public Transform GetKitchenObjectFollowtransform()
+    {
+        return counterTopSpawnPoint.transform;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+
+    public void VoidKitchenObject()
+    {
+        kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return (kitchenObject != null);
+   
+    }
 }
