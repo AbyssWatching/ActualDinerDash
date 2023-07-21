@@ -27,8 +27,8 @@ public class ContainerCounter : BaseCounter, IKitchenObjectInterface
         if(!player.HasKitchenObject()){
 
             //Debug.Log("We interacting with the clear counter!");
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
+
+            KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
         
             OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
         }

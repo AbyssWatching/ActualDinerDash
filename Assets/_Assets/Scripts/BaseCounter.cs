@@ -13,6 +13,11 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectInterface
         Debug.Log("interact");
     } 
 
+        public virtual void InteractAlt(PlayerMovementScript player)
+    {
+        Debug.Log("interact Alt");
+    } 
+
     public Transform GetKitchenObjectFollowtransform()
     {
         return counterTopSpawnPoint.transform;

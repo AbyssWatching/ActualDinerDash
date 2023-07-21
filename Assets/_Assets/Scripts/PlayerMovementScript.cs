@@ -35,6 +35,7 @@ public class PlayerMovementScript : MonoBehaviour, IKitchenObjectInterface
     void Start()
     {
         PlayerInputScript.OnInteractAction += PlayerInputActions_OnInteractAction;
+        PlayerInputScript.OnInteractAlt += PlayerInputActions_OnInteractAlt;
     }
 
     private void Awake(){
@@ -48,6 +49,16 @@ public class PlayerMovementScript : MonoBehaviour, IKitchenObjectInterface
         if (selectedCounter != null)
         {
             selectedCounter.Interact(this);
+        }
+
+        //HandleInteractions();
+    }
+
+     private void PlayerInputActions_OnInteractAlt(object sender, System.EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlt(this);
         }
 
         //HandleInteractions();
@@ -77,9 +88,10 @@ public class PlayerMovementScript : MonoBehaviour, IKitchenObjectInterface
 
         if (!canMmove)
         {
+            //trying to move in only the x direction
             Vector3 directionX = new Vector3(direction.x, 0, 0).normalized;
 
-            canMmove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionX, moveDistance);
+            canMmove = direction.x !=0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionX, moveDistance);
 
             if (canMmove)
             {
@@ -92,7 +104,7 @@ public class PlayerMovementScript : MonoBehaviour, IKitchenObjectInterface
 
                 Vector3 directionZ = new Vector3(0, 0, direction.z).normalized;
 
-                canMmove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionZ, moveDistance);
+                canMmove = direction.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerhieght, playerRadius, directionZ, moveDistance);
 
                 if (canMmove)
                 {
