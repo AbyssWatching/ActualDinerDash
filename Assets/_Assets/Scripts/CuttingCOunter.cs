@@ -6,7 +6,7 @@ public class CuttingCOunter : BaseCounter
 {
     // Start is called before the first frame update
 
-    [SerializeField] private KitchenObjectSO cutKitchenSO;
+    [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOsuttingRecipeSOs;
     void Start()
     {
         
@@ -26,7 +26,12 @@ public class CuttingCOunter : BaseCounter
             if (player.HasKitchenObject())
             {
              //do something   
-             player.GetKitchenObject().SetKitchenObjectParent(this);
+            
+                if (HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                    
+                }
             }
             else{
                 //player doesn't have the kitchenObject
@@ -49,11 +54,39 @@ public class CuttingCOunter : BaseCounter
 
     public override void InteractAlt(PlayerMovementScript player)
     {
-        if (HasKitchenObject())
+        if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
+            KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+
             GetKitchenObject().SelfDestruct();
 
-            KitchenObject.SpawnKitchenObject(cutKitchenSO, this);
+            KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
         }
+    }
+
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach (CuttingRecipeSO test in cuttingRecipeSOsuttingRecipeSOs)
+        {
+            if (test.input == inputKitchenObjectSO)
+            {
+                return test.output;
+            }
+            
+        }
+        return null;
+    }
+
+    private bool HasRecipeWithInput (KitchenObjectSO kitchenObject)
+    {
+        foreach (CuttingRecipeSO test in cuttingRecipeSOsuttingRecipeSOs)
+        {
+            if (test.input == kitchenObject)
+            {
+                return true;
+            }
+            
+        }
+        return false;
     }
 }
