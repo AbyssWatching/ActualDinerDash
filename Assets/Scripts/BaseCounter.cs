@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseCounter : MonoBehaviour, IKitchenObjectInterface
 {
-    // Start is called before the first frame update
+    
     private KitchenObject kitchenObject;
     [SerializeField] private GameObject counterTopSpawnPoint;
 
