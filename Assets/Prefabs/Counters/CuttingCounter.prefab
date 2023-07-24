@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 8120670809374810592}
   - component: {fileID: 1102443971677762607}
   - component: {fileID: 2058784191833058650}
+  - component: {fileID: 455546972636494400}
   m_Layer: 6
   m_Name: Progree
   m_TagString: Untagged
@@ -303,6 +304,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barImage: {fileID: 2335848161434461970}
   cuttingCOunter: {fileID: 2611789690397364050}
+--- !u!114 &455546972636494400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8111887930529450175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2925aef2618aab646a2728905818f523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 3
 --- !u!1001 &3972100067275434782
 PrefabInstance:
   m_ObjectHideFlags: 0
