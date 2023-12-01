@@ -5,6 +5,8 @@ using System;
 
 public class PlayerInputScript : MonoBehaviour
 {
+
+    
     // Start is called before the first frame update
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlt;
